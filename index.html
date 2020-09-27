@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time tracker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+          integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+          crossorigin="anonymous"/>
+    <!-- SVG sprites -->
+    <svg width="0" height="0" class="hidden">
+        <symbol viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" id="calendar">
+            <path
+                    d="M10.5 1.5H10v-1a.5.5 0 0 0-.5-.5H9a.5.5 0 0 0-.5.5v1h-5v-1A.5.5 0 0 0 3 0h-.5a.5.5 0 0 0-.5.5v1h-.5C.673 1.5 0 2.173 0 3v7.5c0 .827.673 1.5 1.5 1.5h9c.827 0 1.5-.673 1.5-1.5V3c0-.827-.673-1.5-1.5-1.5zm.5 9a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V5.02h10v5.48z">
+            </path>
+        </symbol>
+    </svg>
+    <svg width="0" height="0" class="hidden">
+        <symbol viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="settings">
+            <path
+                    d="M19.401 12.192l-1.838-1.438c.023-.221.043-.48.043-.755 0-.274-.019-.533-.043-.755l1.84-1.438a.901.901 0 0 0 .218-1.148L17.709 3.35a.886.886 0 0 0-1.106-.397l-2.17.87a7.437 7.437 0 0 0-1.302-.756l-.33-2.3A.885.885 0 0 0 11.918 0H8.085c-.45 0-.829.33-.882.76l-.33 2.31a7.667 7.667 0 0 0-1.3.755l-2.176-.873c-.407-.158-.895.019-1.097.39L.385 6.654a.896.896 0 0 0 .217 1.154l1.839 1.438c-.03.28-.044.525-.044.754 0 .23.014.473.044.755L.6 12.193a.902.902 0 0 0-.217 1.149l1.912 3.307a.885.885 0 0 0 1.105.398l2.17-.871c.415.299.85.552 1.301.756l.33 2.3a.884.884 0 0 0 .883.768h3.834c.449 0 .829-.33.882-.76l.331-2.308a7.702 7.702 0 0 0 1.3-.757l2.175.873a.88.88 0 0 0 1.098-.39l1.92-3.325a.9.9 0 0 0-.224-1.141zm-9.4 1.141A3.337 3.337 0 0 1 6.668 10a3.337 3.337 0 0 1 3.333-3.333A3.337 3.337 0 0 1 13.335 10 3.337 3.337 0 0 1 10 13.333z"
+                    fill="#fff"></path>
+        </symbol>
+    </svg>
+    <svg width="0" height="0" class="hidden">
+        <symbol viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" id="info">
+            <path
+                    d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm.929 13.857h-2V8.714h2v5.143zm-1-6a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"
+                    fill="#fff"></path>
+        </symbol>
+    </svg>
+    <svg width="0" height="0" class="hidden">
+        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5.215 5.292" id="exit">
+            <path
+                    d="M1.984 2.646c0-.365.297-.662.662-.662h.882V.22a.22.22 0 0 0-.22-.22H.22A.22.22 0 0 0 0 .22v4.851c0 .122.099.22.22.22h3.087a.22.22 0 0 0 .22-.22V3.308h-.881a.662.662 0 0 1-.662-.662z">
+            </path>
+            <path
+                    d="M5.165 2.809l.002-.003a.222.222 0 0 0 .01-.015l.005-.007.007-.011.004-.01.005-.01.004-.01.003-.01.003-.012.002-.008a.221.221 0 0 0 .003-.018v-.003a.224.224 0 0 0 0-.045v-.003a.221.221 0 0 0-.003-.018l-.002-.008-.003-.013-.003-.01-.004-.01-.005-.01-.004-.01-.007-.01-.004-.008a.221.221 0 0 0-.011-.014l-.002-.003a.217.217 0 0 0-.016-.017l-.881-.881a.22.22 0 1 0-.312.311l.506.506H2.569a.22.22 0 1 0 0 .44h1.893l-.506.506a.22.22 0 1 0 .312.312l.881-.881a.213.213 0 0 0 .016-.017z">
+            </path>
+            <path
+                    d="M.801 5.277C.31 5.27.132 5.263.104 5.247.011 5.195.016 5.34.013 2.655.009-.045.003.129.103.05.147.015.15.015 1.753.013c1.563-.002 1.607 0 1.66.03.107.066.104.04.106 1.035v.902l-.53.006-.53.006-.1.049a.766.766 0 0 0-.322.323c-.04.086-.045.115-.045.28 0 .164.005.194.045.279a.7.7 0 0 0 .479.378c.053.011.27.018.547.018h.459v.889c.002.981.004.96-.104 1.039-.046.034-.063.034-1.002.036-.525.001-1.252-.002-1.615-.006z"
+                    fill="#fff" stroke-width=".063"></path>
+            <path
+                    d="M4.074 3.762a.208.208 0 0 1-.15-.11.222.222 0 0 1-.006-.193c.01-.019.136-.152.281-.297.145-.145.264-.267.264-.27 0-.003-.43-.006-.955-.005-1.079.001-1.011.005-1.084-.063a.205.205 0 0 1-.045-.252.276.276 0 0 1 .053-.068c.063-.052.01-.05 1.067-.051.53-.001.963-.004.963-.008 0-.003-.122-.128-.27-.277-.294-.294-.294-.294-.293-.384a.21.21 0 0 1 .214-.21c.097 0 .091-.004.598.507.327.328.465.473.478.5a.194.194 0 0 1 .018.087c0 .095.004.091-.508.603-.396.396-.47.467-.503.478a.212.212 0 0 1-.122.013z"
+                    fill="#fff" stroke-width=".032"></path>
+        </symbol>
+    </svg>
+    <svg width="0" height="0" class="hidden">
+        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4.762 3.833" id="upload">
+            <path
+                    d="M2.371 0c.04 0 .08.017.108.046L3.52 1.137a.149.149 0 0 1-.107.252h-.546V2.53a.248.248 0 0 1-.248.248h-.496a.248.248 0 0 1-.248-.248V1.39h-.546a.149.149 0 0 1-.107-.253L2.264.046A.149.149 0 0 1 2.37 0zM.347 3.04h4.068c.192 0 .348.155.348.346v.1a.348.348 0 0 1-.348.347H.347A.348.348 0 0 1 0 3.486v-.1c0-.191.156-.347.347-.347z"
+                    fill="#3744bd"></path>
+            <path fill="#fff" stroke-width=".265" d="M8.756.217h5.763v9.305H8.756z"></path>
+        </symbol>
+    </svg>
+    <svg width="0" height="0" class="hidden">
+        <symbol viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg" id="play">
+            <path
+                    d="M11.082 5.303a1.267 1.267 0 0 1 0 2.194l-8.2 4.734a1.267 1.267 0 0 1-1.9-1.097V1.666a1.267 1.267 0 0 1 1.9-1.097l8.2 4.734z"
+                    fill="#828282"></path>
+        </symbol>
+    </svg>
+    <svg width="0" height="0" class="hidden">
+        <symbol viewBox="0 0 12 13" xmlns="http://www.w3.org/2000/svg" id="pause">
+            <rect width="4" height="13" rx="2" fill="white"/>
+            <rect x="8" width="4" height="13" rx="2" fill="white"/>
+        </symbol>
+    </svg>
+    <svg width="0" height="0" class="hidden">
+        <symbol viewBox="0 0 14 11" fill="none" xmlns="http://www.w3.org/2000/svg" id="accept">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M13.53.97a.75.75 0 0 1 0 1.06l-8.25 8.25a.75.75 0 0 1-1.06 0L.47 6.53a.75.75 0 0 1 1.06-1.06l3.22 3.22L12.47.97a.75.75 0 0 1 1.06 0z"
+                  fill="#62D2B1"></path>
+        </symbol>
+    </svg>
+    <svg width="0" height="0" class="hidden">
+        <symbol viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" id="decline">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M14.03 3.97a.75.75 0 0 1 0 1.06l-9 9a.75.75 0 0 1-1.06-1.06l9-9a.75.75 0 0 1 1.06 0z"
+                  fill="#C4CACB"></path>
+            <path fill-rule="evenodd" clip-rule="evenodd"
+                  d="M3.97 3.97a.75.75 0 0 1 1.06 0l9 9a.75.75 0 1 1-1.06 1.06l-9-9a.75.75 0 0 1 0-1.06z"
+                  fill="#C4CACB"></path>
+        </symbol>
+    </svg>
+</head>
+
+<body>
+<div class="wrapper">
+    <header>
+        <div class="container">
+            <div class="header">
+                <nav class="header__nav">
+                    <a href="#" class="header__link header__link-active">Home</a>
+                    <a href="#" class="header__link">Issues</a>
+                    <a href="#" class="header__link">Filter</a>
+                    <a href="#" class="header__link">Projects</a>
+                </nav>
+                <div class="header__item">
+                    <a href="#" class="icon__link">
+                        <svg class="header__icon">
+                            <use xlink:href="#settings"></use>
+                        </svg>
+                    </a>
+                    <a href="#" class="icon__link">
+                        <svg class="header__icon">
+                            <use xlink:href="#info"></use>
+                        </svg>
+                    </a>
+                    <a href="#" class="icon__link">
+                        <svg class="header__icon">
+                            <use xlink:href="#exit"></use>
+                        </svg>
+                    </a>
+                    <a href="#" class="icon__link "><img class="header__icon header-user" src="src/img/photo.jpg"
+                                                         alt="photo-icon"></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Main -->
+    <div class="main">
+        <div class="container">
+            <!-- Page -->
+            <div class="time__tracker">
+                <!-- Issues -->
+                <div class="all__issue">
+                    <div class="date__sorting">
+                        <div class="data">
+                            <a href="#" class="change__data">10 june 2020</a>
+                            <svg class="calendar__icon">
+                                <use xlink:href="#calendar"></use>
+                            </svg>
+                        </div>
+                        <div class="calendar">
+                            <div class="calendar__month">
+                                <div class="calendar__date">
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="calendar__week-days">
+                                <div>S</div>
+                                <div>M</div>
+                                <div>T</div>
+                                <div>W</div>
+                                <div>T</div>
+                                <div>F</div>
+                                <div>S</div>
+                            </div>
+                            <div class="calendar__days">
+                            </div>
+                            <div class="calendar__items">
+                                <span class="done"></span>
+                                <p>Done</p>
+                                <span class="inprogress"></span>
+                                <p>In progress</p>
+                                <span class="missed"></span>
+                                <p>Missed</p>
+                            </div>
+                        </div>
+                        <div class="issue__sorting">
+                            <a href="#" class="sorting sorting-active">All</a>
+                            <a href="#" class="sorting">Favorites</a>
+                        </div>
+                    </div>
+                    <!-- First Date -->
+                    <div class="first__date">
+                        <div class="now">
+                            <div class="today"><strong>Wed,</strong>June 10</div>
+                            <div class="today__timer">
+                                <p>06:05:00</p>
+                                <div class="meter meter-progress">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <a href="#" class="upload">
+                                <svg class="upload-icon">
+                                    <use xlink:href="#upload"></use>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="issue">
+                            <div class="issue__items">
+                                <div class="issue__time"><strong>09:00</strong> &mdash; 10:00</div>
+                                <div class="indicator indicator-nostart">
+                                </div>
+                                <div class="issue__name">
+                                    <p class="issue__label">JRM-310</p>
+                                    <p class="issue__text">Team standup</p>
+                                </div>
+                                <div class="progress progress-nostart">
+                                    <span></span>
+                                </div>
+                                <div class="issue__timer">
+                                    <p>01:00:00</p>
+                                </div>
+                                <button class="timer__button">
+                                    <svg class="timer__icon">
+                                        <use xlink:href="#play"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="active__bar">
+                                <div class="active__bar-burger">
+                                    <span></span>
+                                    <ul class="active__bar-menu">
+                                        <li>Jira Link</li>
+                                        <li>Duplicate</li>
+                                        <li>Add to favorite</li>
+                                        <li>Delete</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="issue">
+                            <div class="issue__items">
+                                <div class="issue__time"><strong>10:00</strong> &mdash; 11:15</div>
+                                <div class="indicator indicator-complite">
+                                </div>
+                                <div class="issue__name">
+                                    <p class="issue__label">JRM-310</p>
+                                    <p class="issue__text">Meeting with QA</p>
+                                </div>
+                                <div class="progress progress-complite">
+                                    <span></span>
+                                </div>
+                                <div class="issue__timer">
+                                    <p>01:15:00</p>
+                                </div>
+                                <button class="timer__button">
+                                    <svg class="timer__icon">
+                                        <use xlink:href="#play"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="active__bar">
+                                <div class="active__bar-burger">
+                                    <span></span>
+                                    <ul class="active__bar-menu">
+                                        <li>Jira Link</li>
+                                        <li>Duplicate</li>
+                                        <li>Add to favorite</li>
+                                        <li>Delete</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="issue">
+                            <div class="issue__items">
+                                <div class="issue__time issue__time-amount">
+                                    <div id="two-one" class="two">2</div>
+                                    <i id="shevron" class="fas fa-chevron-up"></i>
+                                </div>
+                                <div class="indicator indicator-process"></div>
+                                <div class="issue__name">
+                                    <p class="issue__label">JRM-310</p>
+                                    <p class="issue__text">Company branding</p>
+                                </div>
+                                <div class="progress progress-inprocess">
+                                    <span></span>
+                                </div>
+                                <div class="issue__timer">
+                                    <p>03:50:00</p>
+                                </div>
+                                <button class="timer__button">
+                                    <svg class="timer__icon">
+                                        <use xlink:href="#play"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="active__bar">
+                                <div class="active__bar-burger">
+                                    <span></span>
+                                    <ul class="active__bar-menu">
+                                        <li>Jira Link</li>
+                                        <li>Duplicate</li>
+                                        <li>Add to favorite</li>
+                                        <li>Delete</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="issue__open">
+                            <div class="issue">
+                                <div class="issue__items">
+                                    <div class="issue__time"><strong>11:30</strong> &mdash; 13:00</div>
+                                    <div class="indicator indicator-process">
+                                    </div>
+                                    <div class="issue__name">
+                                        <p class="issue__label">JRM-310</p>
+                                        <p class="issue__text">Marketing strategy </p>
+                                    </div>
+                                    <div class="progress progress-inprocess">
+                                        <span></span>
+                                    </div>
+                                    <div class="issue__timer">
+                                        <p>01:30:00</p>
+                                    </div>
+                                    <button class="timer__button">
+                                        <svg class="timer__icon">
+                                            <use xlink:href="#play"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="active__bar">
+                                    <div class="active__bar-burger">
+                                        <span></span>
+                                        <ul class="active__bar-menu">
+                                            <li>Jira Link</li>
+                                            <li>Duplicate</li>
+                                            <li>Add to favorite</li>
+                                            <li>Delete</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="issue">
+                                <div class="issue__items">
+                                    <div class="issue__time"><strong>13:20</strong> &mdash; 16:00</div>
+                                    <div class="indicator indicator-complite">
+                                    </div>
+                                    <div class="issue__name">
+                                        <p class="issue__label">JRM-310</p>
+                                        <p class="issue__text">Moodboarding</p>
+                                    </div>
+                                    <div class="progress progress-complite">
+                                        <span></span>
+                                    </div>
+                                    <div class="issue__timer">
+                                        <p>02:40:00</p>
+                                    </div>
+                                    <button class="timer__button">
+                                        <svg class="timer__icon">
+                                            <use xlink:href="#play"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="active__bar">
+                                    <div class="active__bar-burger">
+                                        <span></span>
+                                        <ul class="active__bar-menu">
+                                            <li>Jira Link</li>
+                                            <li>Duplicate</li>
+                                            <li>Add to favorite</li>
+                                            <li>Delete</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="issue__bar">
+                            <div class="bar__indicator">
+                            </div>
+                            <ul class="bar__time">
+                                <li>07:00</li>
+                                <li>08:00</li>
+                                <li>09:00</li>
+                                <li>10:00</li>
+                                <li>11:00</li>
+                                <li>12:00</li>
+                                <li>13:00</li>
+                                <li>14:00</li>
+                                <li>15:00</li>
+                                <li>16:00</li>
+                                <li>17:00</li>
+                                <li>18:00</li>
+                                <li>19:00</li>
+                            </ul>
+                        </div>
+                        <!-- /First Date -->
+                    </div>
+                    <!-- Second Date -->
+                    <div class="second__date">
+                        <div class="now">
+                            <div class="today"><strong>Tue,</strong>June 9</div>
+                            <div class="today__timer">
+                                <p>08:00:00</p>
+                                <div class="meter meter-full">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <a href="#" class="upload">
+                                <svg class="upload-icon">
+                                    <use xlink:href="#upload"></use>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="issue">
+                            <div class="issue__items">
+                                <div class="issue__time"><strong>09:00</strong> &mdash; 10:00</div>
+                                <div class="indicator indicator-complite">
+                                </div>
+                                <div class="issue__name">
+                                    <p class="issue__label">JRM-310</p>
+                                    <p class="issue__text">Team standup</p>
+                                </div>
+                                <div class="progress progress-complite">
+                                    <span></span>
+                                </div>
+                                <div class="issue__timer">
+                                    <p>01:00:00</p>
+                                </div>
+                                <button class="timer__button">
+                                    <svg class="timer__icon">
+                                        <use xlink:href="#play"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="active__bar">
+                                <div class="active__bar-burger">
+                                    <span></span>
+                                    <ul class="active__bar-menu">
+                                        <li>Jira Link</li>
+                                        <li>Duplicate</li>
+                                        <li>Add to favorite</li>
+                                        <li>Delete</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="issue">
+                            <div class="issue__items">
+                                <div class="issue__time"><strong>10:00</strong> &mdash; 11:15</div>
+                                <div class="indicator indicator-complite">
+                                </div>
+                                <div class="issue__name">
+                                    <p class="issue__label">JRM-310</p>
+                                    <p class="issue__text">Meeting with QA</p>
+                                </div>
+                                <div class="progress progress-complite">
+                                    <span></span>
+                                </div>
+                                <div class="issue__timer">
+                                    <p>01:15:00</p>
+                                </div>
+                                <button class="timer__button">
+                                    <svg class="timer__icon">
+                                        <use xlink:href="#play"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="active__bar">
+                                <div class="active__bar-burger">
+                                    <span></span>
+                                    <ul class="active__bar-menu">
+                                        <li>Jira Link</li>
+                                        <li>Duplicate</li>
+                                        <li>Add to favorite</li>
+                                        <li>Delete</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="issue">
+                            <div class="issue__items">
+                                <div class="issue__time issue__time-amount">
+                                    <div class="two">2</div>
+                                    <i id="shevron-two" class="fas fa-chevron-up"></i>
+                                </div>
+                                <div class="indicator indicator-process"></div>
+                                <div class="issue__name">
+                                    <p class="issue__label">JRM-310</p>
+                                    <p class="issue__text">Company branding</p>
+                                </div>
+                                <div class="progress progress-inprocess">
+                                    <span></span>
+                                </div>
+                                <div class="issue__timer">
+                                    <p>03:50:00</p>
+                                </div>
+                                <button class="timer__button">
+                                    <svg class="timer__icon">
+                                        <use xlink:href="#play"></use>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="active__bar">
+                                <div class="active__bar-burger">
+                                    <span></span>
+                                    <ul class="active__bar-menu">
+                                        <li>Jira Link</li>
+                                        <li>Duplicate</li>
+                                        <li>Add to favorite</li>
+                                        <li>Delete</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="issue__bar">
+                            <div class="bar__indicator">
+                            </div>
+                            <ul class="bar__time">
+                                <li>07:00</li>
+                                <li>08:00</li>
+                                <li>09:00</li>
+                                <li>10:00</li>
+                                <li>11:00</li>
+                                <li>12:00</li>
+                                <li>13:00</li>
+                                <li>14:00</li>
+                                <li>15:00</li>
+                                <li>16:00</li>
+                                <li>17:00</li>
+                                <li>18:00</li>
+                                <li>19:00</li>
+                            </ul>
+                        </div>
+                        <!-- /Second Date -->
+                    </div>
+                    <!-- /Issues -->
+                </div>
+                <!-- Tracker -->
+                <div class="tracking">
+                    <div class="tracking__timer">
+                        <div class="tracking__header">
+                            <p>Time tracking</p>
+                            <div class="tracking__burger">
+                                <span></span>
+                                <ul class="tracking__burger-menu">
+                                    <li>Jira Link</li>
+                                    <li>Duplicate</li>
+                                    <li>Add to favorite</li>
+                                    <li>Delete</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="new__worklog__wrapper">
+                            <div class="new__worklog">
+                                <button class="append__worklog"></button>
+                                <p class="new__label">new worklog</p>
+                            </div>
+                        </div>
+                        <div class="stopwatch__wrapper">
+                            <div class="stopwatch">
+                                <input class="stopwatch__issue" size="7" placeholder='Add Issue'>
+                                <input class="stopwatch__label" size="7" placeholder='Add Label'>
+                                <input class="stopwatch__timer" name="clock" size="5" maxlength="12" value="00:00:00"
+                                       disabled="true">
+                                <div class='stopwatch__buttons'>
+                                    <button class='stopwatch__button stopwatch__button-stop'></button>
+                                    <button class='stopwatch__button stopwatch__button-pause'></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sync -->
+                    <div class="sync">
+                        <div class="sync__items">
+                            <div class="tracking__header">
+                                <p>Google calendar sync</p>
+                            </div>
+                            <a href="#" class="switch"></a>
+                            <svg class="calendar__icon calendar__icon-grey">
+                                <use xlink:href="#calendar"></use>
+                            </svg>
+                        </div>
+                        <div class="sync__issues">
+                            <div class="sync__issue">
+                                <div class="sync__indicator sync__indicator-blue"></div>
+                                <div class="issue__text">
+                                    <p>Logo redesign</p>
+                                    <p>09:00 &mdash; 10:00</p>
+                                </div>
+                            </div>
+                            <div class="sync__issue">
+                                <div class="sync__indicator sync__indicator-orange"></div>
+                                <div class="issue__text">
+                                    <p>Meeting with CEO</p>
+                                    <p>14:00 &mdash; 14:45</p>
+                                </div>
+                            </div>
+                            <div class="sync__issue">
+                                <div class="sync__indicator sync__indicator-violet"></div>
+                                <div class="sync__text">
+                                    <p>Brainstorm</p>
+                                    <p>15:00 &mdash; 16:15</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /Sync -->
+                    </div>
+                </div>
+                <!-- /Tracker -->
+                <!-- /Page -->
+            </div>
+        </div>
+        <!-- /Main -->
+    </div>
+</div>
+<!-- Log notification-->
+<div class="log">
+    <div class="log__items">
+        <div class="log__status"></div>
+        <span class="log__cancel"></span>
+    </div>
+    <div class="log__notification">
+        Nothing to log. Please check issues assignment or description.
+    </div>
+    <!-- /Log notification-->
+</div>
+<!-- New Worklog Time Input -->
+<div class="show__worklog">
+    <div class="wrapper-worklog">
+        <div class="worklog__window">
+            <div class="worklog__header"><p>New worklog</p></div>
+            <div class="worklog__container">
+                <div class="range__slider">
+                    <div class="track"></div>
+                    <button class="thumb thumb-1"><span></span>
+                        <div class="thumb__item">
+                            <span></span>
+                            <input type="number" size="1" min="7" max="19" class="range__input-1">
+                        </div>
+                    </button>
+                    <button class="thumb thumb-2"><span></span>
+                        <div class="thumb__item">
+                            <span></span>
+                            <input type="number" size="1" min="7" max="19" class="range__input-2">
+                        </div>
+                    </button>
+                </div>
+                <div class="worklog__inputs">
+                    <label>Worklog name</label>
+                    <input type="text" class="worklog__name-input" placeholder="Enter the worklog name">
+                    <label>Issue</label>
+                    <input type="text" class="worklog__issue-input" placeholder="Enter the issue name">
+                </div>
+                <div class="new__worklog__buttons">
+                    <button class="new__worklog__button new__worklog__button-accept">
+                        <svg class="accept__icon">
+                            <use xlink:href="#accept"></use>
+                        </svg>
+                    </button>
+                    <button class="new__worklog__button new__worklog__button-decline">
+                        <svg class="decline__icon">
+                            <use xlink:href="#decline"></use>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /New Worklog Time Input -->
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+        crossorigin="anonymous"></script>
+<script src="js/script.js"></script>
+</body>
+
+</html>
